@@ -1,0 +1,1807 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{dotnet}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{write-a-c-program-to-demonstrate-five-types-of-constructor-in-c.}{%
+\section{1. Write a C\# program to demonstrate five types of constructor
+in
+C\#.}\label{write-a-c-program-to-demonstrate-five-types-of-constructor-in-c.}}
+
+Theory: A constructor is a special member of a class that is
+automatically called when an object is created. It is mainly used to
+initialize data members of a class. C\# supports different types of
+constructors such as: Default Constructor -- Initializes object with
+default values. Parameterized Constructor -- Accepts parameters to
+initialize data members. Copy Constructor-- Copies values from one
+object to another. Static Constructor -- Initializes static members of
+the class and runs only once. Private Constructor -- Restricts object
+creation from outside the class.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{// LAb 1}
+
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Student}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{Id}\PY{p}{;}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{Name}\PY{p}{;}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{College}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{static}\PY{+w}{ }\PY{n+nf}{Student}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{College}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}ABC Engineering College\PYZdq{}}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Static Constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{Student}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Id}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{0}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Not Assigned\PYZdq{}}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Default Constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{Student}\PY{p}{(}\PY{k+kt}{int}\PY{+w}{ }\PY{n}{id}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{name}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Id}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{id}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{name}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Parameterized Constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{Student}\PY{p}{(}\PY{n}{Student}\PY{+w}{ }\PY{n}{s}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Id}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{s}\PY{p}{.}\PY{n}{Id}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{s}\PY{p}{.}\PY{n}{Name}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Copy Constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Display}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Id: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{Id}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+s}{\PYZdq{}, Name: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{Name}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+s}{\PYZdq{}, College: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{College}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Singleton}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{private}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{n}{Singleton}\PY{+w}{ }\PY{n}{instance}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{private}\PY{+w}{ }\PY{n+nf}{Singleton}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Private Constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{n}{Singleton}\PY{+w}{ }\PY{n+nf}{GetInstance}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{k}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{instance}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{k}{null}\PY{p}{)}
+\PY{+w}{            }\PY{n}{instance}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Singleton}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{k}{return}\PY{+w}{ }\PY{n}{instance}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Student}\PY{+w}{ }\PY{n}{s1}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Student}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{s1}\PY{p}{.}\PY{n}{Display}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Student}\PY{+w}{ }\PY{n}{s2}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Student}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{,}\PY{+w}{ }\PY{l+s}{\PYZdq{}Rahul\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{s2}\PY{p}{.}\PY{n}{Display}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Student}\PY{+w}{ }\PY{n}{s3}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Student}\PY{p}{(}\PY{n}{s2}\PY{p}{)}\PY{p}{;}
+\PY{n}{s3}\PY{p}{.}\PY{n}{Display}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Singleton}\PY{+w}{ }\PY{n}{obj1}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{Singleton}\PY{p}{.}\PY{n}{GetInstance}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{Singleton}\PY{+w}{ }\PY{n}{obj2}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{Singleton}\PY{p}{.}\PY{n}{GetInstance}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details (added at the end)}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nName: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nRoll no: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Static Constructor called
+Default Constructor called
+Id: 0, Name: Not Assigned, College: ABC Engineering College
+Parameterized Constructor called
+Id: 101, Name: Rahul, College: ABC Engineering College
+Copy Constructor called
+Id: 101, Name: Rahul, College: ABC Engineering College
+Private Constructor called
+
+Student Details:
+
+Name: Mohit Tharu
+
+Roll no: 117
+    \end{Verbatim}
+
+    \hypertarget{wap-in-c-to-demonstrate-concept-of-auto-property-and-read-only-property.}{%
+\section{2. WAP in C\# to demonstrate concept of Auto Property and
+Read-Only
+Property.}\label{wap-in-c-to-demonstrate-concept-of-auto-property-and-read-only-property.}}
+
+Theory: Properties in C\# provide a flexible way to read, write, or
+compute values of private fields. Auto Property allows automatic
+creation of getter and setter without explicitly declaring a backing
+variable. Read-Only Property allows data to be read but not modified
+after initialization.These properties improve code readability and data
+security.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Student}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// Auto Properties}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{Name}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{k}{get}\PY{p}{;}\PY{+w}{ }\PY{k}{set}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{RollNo}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{k}{get}\PY{p}{;}\PY{+w}{ }\PY{k}{set}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{c+c1}{// Read\PYZhy{}Only Property}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{College}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{k}{get}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{c+c1}{// Constructor}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{Student}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{name}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{rollNo}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{name}\PY{p}{;}
+\PY{+w}{        }\PY{n}{RollNo}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{rollNo}\PY{p}{;}
+\PY{+w}{        }\PY{n}{College}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Patan Multiple Campus\PYZdq{}}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Display}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Student Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{Name}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{College}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Student}\PY{+w}{ }\PY{n}{s}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Student}\PY{p}{(}\PY{l+s}{\PYZdq{}Mohit Tharu\PYZdq{}}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{117}\PY{p}{)}\PY{p}{;}
+\PY{n}{s}\PY{p}{.}\PY{n}{Display}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-in-c-to-demonstrate-jagged-array.}{%
+\section{3. WAP in C\# to demonstrate Jagged
+Array.}\label{wap-in-c-to-demonstrate-jagged-array.}}
+
+Theory:A jagged array is an array of arrays in which each inner array
+can have a different size. Unlike multidimensional arrays, jagged arrays
+provide flexibility in storing uneven data and are commonly used when
+rows contain varying numbers of elements.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// Declaring Jagged Array}
+\PY{k+kt}{int}\PY{p}{[}\PY{p}{]}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{n}{marks}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{[}\PY{p}{]}\PY{p}{;}
+
+\PY{c+c1}{// Initializing Jagged Array}
+\PY{n}{marks}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{l+m+mi}{80}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{85}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{90}\PY{+w}{ }\PY{p}{\PYZcb{}}\PY{p}{;}
+\PY{n}{marks}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{l+m+mi}{75}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{88}\PY{+w}{ }\PY{p}{\PYZcb{}}\PY{p}{;}
+\PY{n}{marks}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{l+m+mi}{92}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{89}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{95}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{91}\PY{+w}{ }\PY{p}{\PYZcb{}}\PY{p}{;}
+
+\PY{c+c1}{// Displaying Jagged Array elements}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Jagged Array Elements:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{k}{for}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{int}\PY{+w}{ }\PY{n}{i}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{0}\PY{p}{;}\PY{+w}{ }\PY{n}{i}\PY{+w}{ }\PY{o}{\PYZlt{}}\PY{+w}{ }\PY{n}{marks}\PY{p}{.}\PY{n}{Length}\PY{p}{;}\PY{+w}{ }\PY{n}{i}\PY{o}{++}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{Write}\PY{p}{(}\PY{l+s}{\PYZdq{}Row \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{p}{(}\PY{n}{i}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{)}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+s}{\PYZdq{}: \PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{k}{for}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{int}\PY{+w}{ }\PY{n}{j}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{0}\PY{p}{;}\PY{+w}{ }\PY{n}{j}\PY{+w}{ }\PY{o}{\PYZlt{}}\PY{+w}{ }\PY{n}{marks}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{.}\PY{n}{Length}\PY{p}{;}\PY{+w}{ }\PY{n}{j}\PY{o}{++}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{Write}\PY{p}{(}\PY{n}{marks}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+s}{\PYZdq{} \PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Student details (added at the end)}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Jagged Array Elements:
+Row 1: 80 85 90
+Row 2: 75 88
+Row 3: 92 89 95 91
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-demonstrate-indexer-in-ca-when-index-is-of-int-type-b-when-index-is-of-other-than-int-type}{%
+\section{4. WAP to demonstrate Indexer in C\#:a) When index is of int
+type b) When index is of other than int
+type}\label{wap-to-demonstrate-indexer-in-ca-when-index-is-of-int-type-b-when-index-is-of-other-than-int-type}}
+
+Theory: An Indexer allows an object of a class to be accessed like an
+array. It uses the this keyword and can accept different types of
+parameters. Int type indexer allows access using numeric index values.
+Non-int type indexer (like string) allows access using keys or names.
+Indexers improve data encapsulation and make object access easier.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// (a) Indexer with int type}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{IntIndexer}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{private}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{n}{numbers}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{k}{this}\PY{p}{[}\PY{k+kt}{int}\PY{+w}{ }\PY{n}{index}\PY{p}{]}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{k}{get}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{k}{return}\PY{+w}{ }\PY{n}{numbers}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+\PY{+w}{        }\PY{k}{set}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{n}{numbers}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{value}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// (b) Indexer with non\PYZhy{}int type (string)}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{StringIndexer}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{private}\PY{+w}{ }\PY{k+kt}{string}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{n}{names}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k+kt}{string}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{k}{this}\PY{p}{[}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{key}\PY{p}{]}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{k}{get}
+\PY{+w}{        }\PY{p}{\PYZob{}}
+\PY{+w}{            }\PY{k}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{key}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s}{\PYZdq{}first\PYZdq{}}\PY{p}{)}\PY{+w}{ }\PY{k}{return}\PY{+w}{ }\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{;}
+\PY{+w}{            }\PY{k}{else}\PY{+w}{ }\PY{n+nf}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{key}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s}{\PYZdq{}second\PYZdq{}}\PY{p}{)}\PY{+w}{ }\PY{k}{return}\PY{+w}{ }\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{;}
+\PY{+w}{            }\PY{k}{else}\PY{+w}{ }\PY{n+nf}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{key}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s}{\PYZdq{}third\PYZdq{}}\PY{p}{)}\PY{+w}{ }\PY{k}{return}\PY{+w}{ }\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{;}
+\PY{+w}{            }\PY{k}{else}\PY{+w}{ }\PY{k}{return}\PY{+w}{ }\PY{l+s}{\PYZdq{}Invalid Key\PYZdq{}}\PY{p}{;}
+\PY{+w}{        }\PY{p}{\PYZcb{}}
+\PY{+w}{        }\PY{k}{set}
+\PY{+w}{        }\PY{p}{\PYZob{}}
+\PY{+w}{            }\PY{k}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{key}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s}{\PYZdq{}first\PYZdq{}}\PY{p}{)}\PY{+w}{ }\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{value}\PY{p}{;}
+\PY{+w}{            }\PY{k}{else}\PY{+w}{ }\PY{n+nf}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{key}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s}{\PYZdq{}second\PYZdq{}}\PY{p}{)}\PY{+w}{ }\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{value}\PY{p}{;}
+\PY{+w}{            }\PY{k}{else}\PY{+w}{ }\PY{n+nf}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{key}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s}{\PYZdq{}third\PYZdq{}}\PY{p}{)}\PY{+w}{ }\PY{n}{names}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{value}\PY{p}{;}
+\PY{+w}{        }\PY{p}{\PYZcb{}}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{IntIndexer}\PY{+w}{ }\PY{n}{obj1}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{IntIndexer}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{obj1}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{10}\PY{p}{;}
+\PY{n}{obj1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{20}\PY{p}{;}
+\PY{n}{obj1}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{30}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Indexer with int type:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{obj1}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{obj1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{obj1}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{StringIndexer}\PY{+w}{ }\PY{n}{obj2}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{StringIndexer}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{obj2}\PY{p}{[}\PY{l+s}{\PYZdq{}first\PYZdq{}}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Apple\PYZdq{}}\PY{p}{;}
+\PY{n}{obj2}\PY{p}{[}\PY{l+s}{\PYZdq{}second\PYZdq{}}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Banana\PYZdq{}}\PY{p}{;}
+\PY{n}{obj2}\PY{p}{[}\PY{l+s}{\PYZdq{}third\PYZdq{}}\PY{p}{]}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Mango\PYZdq{}}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nIndexer with non\PYZhy{}int type:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{obj2}\PY{p}{[}\PY{l+s}{\PYZdq{}first\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{obj2}\PY{p}{[}\PY{l+s}{\PYZdq{}second\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{obj2}\PY{p}{[}\PY{l+s}{\PYZdq{}third\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Indexer with int type:
+10
+20
+30
+
+Indexer with non-int type:
+Apple
+Banana
+Mango
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-demonstrate}{%
+\section{5. WAP to demonstrate:}\label{wap-to-demonstrate}}
+
+\begin{verbatim}
+# a) The use of base keyword to access base class fields 
+# b) The use of base keyword to call base class methods
+# c) The use of base keyword to call base class constructor
+\end{verbatim}
+
+Theory: The base keyword in C\# is used to access members of the base
+(parent) class from a derived (child) class. Uses of base keyword:
+Access base class fields when they are hidden by derived class members.
+Call base class methods from the derived class.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// Base class}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Person}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{protected}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{name}\PY{p}{;}
+
+\PY{+w}{    }\PY{c+c1}{// Base class constructor}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{Person}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{name}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{k}{this}\PY{p}{.}\PY{n}{name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{name}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Base class constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{c+c1}{// Base class method}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{ShowName}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name from base class: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{name}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Derived class}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Student}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{n}{Person}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{;}
+
+\PY{+w}{    }\PY{c+c1}{// Derived class constructor calling base class constructor}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{Student}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{name}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{rollNo}\PY{p}{)}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{k}{base}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{RollNo}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{rollNo}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Derived class constructor called\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Display}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{c+c1}{// (a) Access base class field using base keyword}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Accessing base class field using base keyword: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{k}{base}\PY{p}{.}\PY{n}{name}\PY{p}{)}\PY{p}{;}
+
+\PY{+w}{        }\PY{c+c1}{// (b) Call base class method using base keyword}
+\PY{+w}{        }\PY{k}{base}\PY{p}{.}\PY{n}{ShowName}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Student}\PY{+w}{ }\PY{n}{s}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Student}\PY{p}{(}\PY{l+s}{\PYZdq{}Mohit Tharu\PYZdq{}}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{117}\PY{p}{)}\PY{p}{;}
+\PY{n}{s}\PY{p}{.}\PY{n}{Display}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Base class constructor called
+Derived class constructor called
+Accessing base class field using base keyword: Mohit Tharu
+Name from base class: Mohit Tharu
+Roll No: 117
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{program-to-show-a-method-overriding-and-method-hidingshadowing-in-c-b-dynamic-polymorphism-using-method-overriding.}{%
+\section{6. Program to show a) method overriding and method
+hiding/shadowing in C\# b) dynamic polymorphism using method
+overriding.}\label{program-to-show-a-method-overriding-and-method-hidingshadowing-in-c-b-dynamic-polymorphism-using-method-overriding.}}
+
+Theory: Method Overriding occurs when a derived class provides a new
+implementation of a base class method using virtual and override
+keywords. Method Hiding (Shadowing) occurs when a derived class defines
+a method with the same name as the base class method using the new
+keyword. Dynamic Polymorphism means that the method call is resolved at
+runtime based on the object type, achieved using method overriding.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// Base class}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Animal}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{virtual}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Sound}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Animal makes a sound\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Eat}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Animal eats food\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Derived class}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Dog}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{n}{Animal}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// Method Overriding}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{override}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Sound}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Dog barks\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{c+c1}{// Method Hiding / Shadowing}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Eat}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Dog eats bones\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Animal}\PY{+w}{ }\PY{n}{a1}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Animal}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{Animal}\PY{+w}{ }\PY{n}{a2}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Dog}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{   }\PY{c+c1}{// Dynamic polymorphism}
+\PY{n}{Dog}\PY{+w}{ }\PY{n}{d}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Dog}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Method Overriding \PYZam{} Dynamic Polymorphism:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{a1}\PY{p}{.}\PY{n}{Sound}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{   }\PY{c+c1}{// Base class method}
+\PY{n}{a2}\PY{p}{.}\PY{n}{Sound}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{   }\PY{c+c1}{// Derived class method (runtime binding)}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nMethod Hiding / Shadowing:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{a2}\PY{p}{.}\PY{n}{Eat}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{     }\PY{c+c1}{// Base class method}
+\PY{n}{d}\PY{p}{.}\PY{n}{Eat}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{      }\PY{c+c1}{// Derived class method}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Method Overriding \& Dynamic Polymorphism:
+Animal makes a sound
+Dog barks
+
+Method Hiding / Shadowing:
+Animal eats food
+Dog eats bones
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-illustrate-the-concept-of-a-abstract-class-b-interface-c-multiple-inheritance-using-interface-in-c}{%
+\section{7. WAP to illustrate the concept of a) Abstract class b)
+Interface c) Multiple inheritance using interface in
+C}\label{wap-to-illustrate-the-concept-of-a-abstract-class-b-interface-c-multiple-inheritance-using-interface-in-c}}
+
+Theory: An abstract class contains abstract methods (without body) and
+non-abstract methods. It cannot be instantiated and must be inherited.
+An interface contains only method declarations. It supports full
+abstraction. Multiple inheritance is not supported using classes in C\#,
+but it is achieved using multiple interfaces.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// (a) Abstract class}
+\PY{k}{abstract}\PY{+w}{ }\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Shape}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{abstract}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Draw}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Info}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}This is a shape\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// (b) Interface}
+\PY{k}{interface}\PY{+w}{ }\PY{n}{IPrintable}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Print}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Another interface (for multiple inheritance)}
+\PY{k}{interface}\PY{+w}{ }\PY{n}{IColor}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Color}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// (c) Multiple inheritance using interface}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Circle}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{n}{Shape}\PY{p}{,}\PY{+w}{ }\PY{n}{IPrintable}\PY{p}{,}\PY{+w}{ }\PY{n}{IColor}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{override}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Draw}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Drawing Circle\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Print}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Printing Circle\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Color}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Circle color is Red\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Circle}\PY{+w}{ }\PY{n}{c}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Circle}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{c}\PY{p}{.}\PY{n}{Info}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{     }\PY{c+c1}{// Abstract class method}
+\PY{n}{c}\PY{p}{.}\PY{n}{Draw}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{     }\PY{c+c1}{// Abstract method implementation}
+\PY{n}{c}\PY{p}{.}\PY{n}{Print}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{    }\PY{c+c1}{// Interface method}
+\PY{n}{c}\PY{p}{.}\PY{n}{Color}\PY{p}{(}\PY{p}{)}\PY{p}{;}\PY{+w}{    }\PY{c+c1}{// Multiple inheritance using interface}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+This is a shape
+Drawing Circle
+Printing Circle
+Circle color is Red
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-program-that-contains-a-structure-struct-b-enumeration-enum-c-partial-class}{%
+\section{8. WAP program that contains: a) Structure (struct) b)
+Enumeration (enum) c) Partial
+class}\label{wap-program-that-contains-a-structure-struct-b-enumeration-enum-c-partial-class}}
+
+Theory: A Structure (struct) is a value type used to group related
+variables of different data types. An Enumeration (enum) is a
+user-defined data type that consists of named constants. A Partial class
+allows a class to be divided into multiple parts, which can be defined
+in the same or different files.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// (a) Structure}
+\PY{k}{struct}\PY{+w}{ }\PY{n+nc}{StudentStruct}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{Name}\PY{p}{;}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Display}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Struct Student:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{Name}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// (b) Enumeration}
+\PY{k}{enum}\PY{+w}{ }\PY{n}{Department}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{ComputerScience}\PY{p}{,}
+\PY{+w}{    }\PY{n}{InformationTechnology}\PY{p}{,}
+\PY{+w}{    }\PY{n}{Electronics}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// (c) Partial class (Part 1)}
+\PY{k}{partial}\PY{+w}{ }\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Student}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{Name}\PY{p}{;}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Partial class (Part 2)}
+\PY{k}{partial}\PY{+w}{ }\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Student}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Show}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nPartial Class Student:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{Name}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{RollNo}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+
+\PY{c+c1}{// Using Structure}
+\PY{n}{StudentStruct}\PY{+w}{ }\PY{n}{ss}\PY{p}{;}
+\PY{n}{ss}\PY{p}{.}\PY{n}{Name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Mohit Tharu\PYZdq{}}\PY{p}{;}
+\PY{n}{ss}\PY{p}{.}\PY{n}{RollNo}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{117}\PY{p}{;}
+\PY{n}{ss}\PY{p}{.}\PY{n}{Display}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Using Enumeration}
+\PY{n}{Department}\PY{+w}{ }\PY{n}{dept}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{Department}\PY{p}{.}\PY{n}{ComputerScience}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nEnum Department:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Department: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{dept}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Using Partial Class}
+\PY{n}{Student}\PY{+w}{ }\PY{n}{s}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Student}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{s}\PY{p}{.}\PY{n}{Name}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}Mohit Tharu\PYZdq{}}\PY{p}{;}
+\PY{n}{s}\PY{p}{.}\PY{n}{RollNo}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{117}\PY{p}{;}
+\PY{n}{s}\PY{p}{.}\PY{n}{Show}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Struct Student:
+Name: Mohit Tharu
+Roll No: 117
+
+Enum Department:
+Department: ComputerScience
+
+Partial Class Student:
+Name: Mohit Tharu
+Roll No: 117
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-illustrate-the-concept-of-a-delegate-b-multicast-delegate-c-func-delegate-d-action-delegate-e-anonymous-method-f-event-in-c.}{%
+\section{9. WAP to illustrate the concept of: a) Delegate b) Multicast
+delegate c) Func Delegate d) Action Delegate e) Anonymous Method f)
+Event in
+C\#.}\label{wap-to-illustrate-the-concept-of-a-delegate-b-multicast-delegate-c-func-delegate-d-action-delegate-e-anonymous-method-f-event-in-c.}}
+
+Theory: Delegate: A type that references a method with a specific
+signature. It allows methods to be passed as parameters. Multicast
+Delegate: A delegate that references multiple methods and calls them in
+sequence. Func Delegate: A generic delegate that returns a value. Action
+Delegate: A generic delegate that does not return a value. Anonymous
+Method: A method without a name, defined inline using delegate keyword.
+Event: A mechanism that allows a class to notify other classes when
+something happens, typically using delegates.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// (a) Delegate}
+\PY{k}{delegate}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{MyDelegate}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{message}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Publisher class for Event}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{EventDemo}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// (f) Event}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{event}\PY{+w}{ }\PY{n}{MyDelegate}\PY{+w}{ }\PY{n}{MyEvent}\PY{p}{;}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{RaiseEvent}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{k}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{MyEvent}\PY{+w}{ }\PY{o}{!=}\PY{+w}{ }\PY{k}{null}\PY{p}{)}
+\PY{+w}{            }\PY{n}{MyEvent}\PY{p}{(}\PY{l+s}{\PYZdq{}Event has been triggered\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{ProgramDemo}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// Methods for delegate}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Method1}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Method1: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Method2}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Method2: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+
+\PY{c+c1}{// (a) Delegate}
+\PY{n}{MyDelegate}\PY{+w}{ }\PY{n}{d1}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{ProgramDemo}\PY{p}{.}\PY{n}{Method1}\PY{p}{;}
+\PY{n}{d1}\PY{p}{(}\PY{l+s}{\PYZdq{}Simple Delegate\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// (b) Multicast Delegate}
+\PY{n}{MyDelegate}\PY{+w}{ }\PY{n}{d2}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{ProgramDemo}\PY{p}{.}\PY{n}{Method1}\PY{p}{;}
+\PY{n}{d2}\PY{+w}{ }\PY{o}{+=}\PY{+w}{ }\PY{n}{ProgramDemo}\PY{p}{.}\PY{n}{Method2}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nMulticast Delegate:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{d2}\PY{p}{(}\PY{l+s}{\PYZdq{}Hello\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// (c) Func Delegate}
+\PY{n}{Func}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{int}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{k}{add}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{+w}{ }\PY{n}{b}\PY{p}{)}\PY{+w}{ }\PY{o}{=\PYZgt{}}\PY{+w}{ }\PY{n}{a}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{b}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nFunc Delegate Result: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{k}{add}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// (d) Action Delegate}
+\PY{n}{Action}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{action}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{msg}\PY{+w}{ }\PY{o}{=\PYZgt{}}\PY{+w}{ }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Action Delegate: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}\PY{p}{;}
+\PY{n}{action}\PY{p}{(}\PY{l+s}{\PYZdq{}Welcome\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// (e) Anonymous Method}
+\PY{n}{MyDelegate}\PY{+w}{ }\PY{n}{anon}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{delegate}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Anonymous Method: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}\PY{p}{;}
+\PY{n}{anon}\PY{p}{(}\PY{l+s}{\PYZdq{}Hello Anonymous\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// (f) Event}
+\PY{n}{EventDemo}\PY{+w}{ }\PY{n}{ev}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{EventDemo}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{ev}\PY{p}{.}\PY{n}{MyEvent}\PY{+w}{ }\PY{o}{+=}\PY{+w}{ }\PY{n}{ProgramDemo}\PY{p}{.}\PY{n}{Method1}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nEvent Example:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{ev}\PY{p}{.}\PY{n}{RaiseEvent}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Method1: Simple Delegate
+
+Multicast Delegate:
+Method1: Hello
+Method2: Hello
+
+Func Delegate Result: 30
+Action Delegate: Welcome
+Anonymous Method: Hello Anonymous
+
+Event Example:
+Method1: Event has been triggered
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-which-use-any-a-non-generic-collection-b-generic-collection}{%
+\section{10. WAP which use any a) Non generic collection b) Generic
+Collection}\label{wap-which-use-any-a-non-generic-collection-b-generic-collection}}
+
+Theory: Non-generic collections: Collections that can store any type of
+object. Examples: ArrayList, Hashtable, Queue, Stack. They are not
+type-safe. Generic collections: Collections that store specific types.
+Examples: List, Dictionary\textless TKey, TValue\textgreater, Queue.
+They are type-safe and provide better performance.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Collections}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Collections.Generic}\PY{p}{;}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+
+\PY{c+c1}{// (a) Non\PYZhy{}Generic Collection (ArrayList)}
+\PY{n}{ArrayList}\PY{+w}{ }\PY{n}{list}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{ArrayList}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{list}\PY{p}{.}\PY{n}{Add}\PY{p}{(}\PY{l+s}{\PYZdq{}Mohit\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{list}\PY{p}{.}\PY{n}{Add}\PY{p}{(}\PY{l+m+mi}{117}\PY{p}{)}\PY{p}{;}
+\PY{n}{list}\PY{p}{.}\PY{n}{Add}\PY{p}{(}\PY{l+m+mf}{75.5}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Non\PYZhy{}Generic Collection (ArrayList):\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{var}\PY{+w}{ }\PY{n}{item}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{list}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{item}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// (b) Generic Collection (List\PYZlt{}T\PYZgt{})}
+\PY{n}{List}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{names}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{List}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{names}\PY{p}{.}\PY{n}{Add}\PY{p}{(}\PY{l+s}{\PYZdq{}Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{names}\PY{p}{.}\PY{n}{Add}\PY{p}{(}\PY{l+s}{\PYZdq{}Rahul\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{names}\PY{p}{.}\PY{n}{Add}\PY{p}{(}\PY{l+s}{\PYZdq{}Sita\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nGeneric Collection (List\PYZlt{}string\PYZgt{}):\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{name}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{names}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Non-Generic Collection (ArrayList):
+Mohit
+117
+75.5
+
+Generic Collection (List<string>):
+Mohit Tharu
+Rahul
+Sita
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{program-to-demonstrate-the-use-of-generic-class-with-generic-field-and-method.}{%
+\section{11. Program to demonstrate the use of Generic Class with
+Generic field and
+method.}\label{program-to-demonstrate-the-use-of-generic-class-with-generic-field-and-method.}}
+
+Theory: Generic Class: A class that can operate on any data type
+specified at object creation. Generic Field: A class member whose type
+is generic. Generic Method: A method that can work with any data type,
+independent of the class's type or other types. Benefits: Type :safety
+,Code ,reusability
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// Generic Class}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{MyGeneric}\PY{o}{\PYZlt{}}\PY{n}{T}\PY{o}{\PYZgt{}}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// Generic Field}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n}{T}\PY{+w}{ }\PY{n}{data}\PY{p}{;}
+
+\PY{+w}{    }\PY{c+c1}{// Constructor}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{MyGeneric}\PY{p}{(}\PY{n}{T}\PY{+w}{ }\PY{k}{value}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{data}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{value}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{c+c1}{// Generic Method}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n}{ShowData}\PY{o}{\PYZlt{}}\PY{n}{U}\PY{o}{\PYZgt{}}\PY{p}{(}\PY{n}{U}\PY{+w}{ }\PY{n}{info}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Generic Field Value: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{data}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Generic Method Value: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{info}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{MyGeneric}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{obj1}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{MyGeneric}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{;}
+\PY{n}{obj1}\PY{p}{.}\PY{n}{ShowData}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{p}{(}\PY{l+s}{\PYZdq{}Hello Generic\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{MyGeneric}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{obj2}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{MyGeneric}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{p}{(}\PY{l+s}{\PYZdq{}Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{obj2}\PY{p}{.}\PY{n}{ShowData}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{p}{(}\PY{l+m+mi}{117}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Generic Field Value: 100
+Generic Method Value: Hello Generic
+Generic Field Value: Mohit Tharu
+Generic Method Value: 117
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-take-input-from-keyboard-and-write-them-to-a-file}{%
+\section{12. WAP to take input from keyboard and write them to a
+file}\label{wap-to-take-input-from-keyboard-and-write-them-to-a-file}}
+
+Theory:File Handling: Writing to a file in C\# can be done using classes
+from System.IO namespace such as StreamWriter or FileStream. Keyboard
+Input: The Console.ReadLine() method reads input from the user.
+Combining these, we can read user input and save it to a text file.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.IO}\PY{p}{;}
+
+\PY{c+c1}{// File path}
+\PY{k+kt}{string}\PY{+w}{ }\PY{n}{filePath}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}studentdata.txt\PYZdq{}}\PY{p}{;}
+
+\PY{c+c1}{// Simulated input (used when keyboard input is not supported)}
+\PY{k+kt}{string}\PY{+w}{ }\PY{n}{input}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+s}{\PYZdq{}This is my first file handling program in C\PYZsh{}\PYZdq{}}\PY{p}{;}
+
+\PY{c+c1}{// Writing to file}
+\PY{k}{using}\PY{+w}{ }\PY{p}{(}\PY{n}{StreamWriter}\PY{+w}{ }\PY{n}{writer}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{StreamWriter}\PY{p}{(}\PY{n}{filePath}\PY{p}{)}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{writer}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}User Input:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{n}{writer}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{input}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Data written to file successfully!\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Written Content:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{input}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Data written to file successfully!
+Written Content:
+This is my first file handling program in C\#
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-demonstrate-the-concept-of-linq}{%
+\section{13. WAP to demonstrate the concept of
+LINQ}\label{wap-to-demonstrate-the-concept-of-linq}}
+
+Theory: LINQ allows querying collections (arrays, lists, XML, databases)
+directly in C\# using query syntax or method syntax. Benefits:
+-\textgreater Simplifies data querying -\textgreater Strongly typed,
+compile-time checking -\textgreater Works on different data source.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Linq}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Collections.Generic}\PY{p}{;}
+
+\PY{c+c1}{// Data source}
+\PY{n}{List}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{numbers}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{List}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{l+m+mi}{10}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{25}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{30}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{45}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{60}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{75}\PY{+w}{ }\PY{p}{\PYZcb{}}\PY{p}{;}
+
+\PY{c+c1}{// LINQ Query Syntax}
+\PY{k+kt}{var}\PY{+w}{ }\PY{n}{evenNumbers}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{from}\PY{+w}{ }\PY{n}{num}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{numbers}
+\PY{+w}{                  }\PY{k}{where}\PY{+w}{ }\PY{n}{num}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{+w}{ }\PY{l+m+mi}{2}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+m+mi}{0}
+\PY{+w}{                  }\PY{k}{select}\PY{+w}{ }\PY{n}{num}\PY{p}{;}
+
+\PY{c+c1}{// LINQ Method Syntax}
+\PY{k+kt}{var}\PY{+w}{ }\PY{n}{greaterThanThirty}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{numbers}\PY{p}{.}\PY{n}{Where}\PY{p}{(}\PY{n}{n}\PY{+w}{ }\PY{o}{=\PYZgt{}}\PY{+w}{ }\PY{n}{n}\PY{+w}{ }\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{l+m+mi}{30}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}LINQ Query Syntax (Even Numbers):\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{var}\PY{+w}{ }\PY{n}{n}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{evenNumbers}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nLINQ Method Syntax (Numbers \PYZgt{} 30):\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{var}\PY{+w}{ }\PY{n}{n}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{greaterThanThirty}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+LINQ Query Syntax (Even Numbers):
+10
+30
+60
+
+LINQ Method Syntax (Numbers > 30):
+45
+60
+75
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to-demonstrate-lamda-expressions-in-c.}{%
+\section{14. WAP to demonstrate Lamda Expressions in
+C\#.}\label{wap-to-demonstrate-lamda-expressions-in-c.}}
+
+Theory: Lambda Expression is an anonymous function used to create
+delegates or expression tree types. Syntax: (parameters) =\textgreater{}
+expression Often used with LINQ or generic delegates like Func and
+Action
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Collections.Generic}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Linq}\PY{p}{;}
+
+\PY{c+c1}{// Data source}
+\PY{n}{List}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{numbers}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{List}\PY{o}{\PYZlt{}}\PY{k+kt}{int}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{l+m+mi}{5}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{10}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{15}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{20}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{25}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{30}\PY{+w}{ }\PY{p}{\PYZcb{}}\PY{p}{;}
+
+\PY{c+c1}{// Lambda Expression with Where()}
+\PY{k+kt}{var}\PY{+w}{ }\PY{n}{evenNumbers}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{numbers}\PY{p}{.}\PY{n}{Where}\PY{p}{(}\PY{n}{n}\PY{+w}{ }\PY{o}{=\PYZgt{}}\PY{+w}{ }\PY{n}{n}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{+w}{ }\PY{l+m+mi}{2}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Lambda Expression with Select()}
+\PY{k+kt}{var}\PY{+w}{ }\PY{n}{squares}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{numbers}\PY{p}{.}\PY{n}{Select}\PY{p}{(}\PY{n}{n}\PY{+w}{ }\PY{o}{=\PYZgt{}}\PY{+w}{ }\PY{n}{n}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{n}{n}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Even Numbers using Lambda Expression:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{var}\PY{+w}{ }\PY{n}{n}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{evenNumbers}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nSquares using Lambda Expression:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{var}\PY{+w}{ }\PY{n}{s}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{squares}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{n}{s}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Lambda Expression with Action}
+\PY{n}{Action}\PY{o}{\PYZlt{}}\PY{k+kt}{string}\PY{o}{\PYZgt{}}\PY{+w}{ }\PY{n}{greet}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{msg}\PY{+w}{ }\PY{o}{=\PYZgt{}}\PY{+w}{ }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Message: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{msg}\PY{p}{)}\PY{p}{;}
+\PY{n}{greet}\PY{p}{(}\PY{l+s}{\PYZdq{}Hello from Lambda Expression\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Even Numbers using Lambda Expression:
+10
+20
+30
+
+Squares using Lambda Expression:
+25
+100
+225
+400
+625
+900
+Message: Hello from Lambda Expression
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-to}{%
+\section{15. WAP to}\label{wap-to}}
+
+\begin{verbatim}
+# a) demonstrate exception handling in C# using try, catch and finally blocks.
+# b) deal with throw keyword in exception handling 
+# c) demonstrate custom exception handling
+\end{verbatim}
+
+Theory: Exception Handling: Mechanism to handle runtime errors without
+crashing the program. try block: Code that may generate exception is
+placed here.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+
+\PY{c+c1}{// (c) Custom Exception}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{AgeException}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{n}{Exception}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{AgeException}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{message}\PY{p}{)}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{k}{base}\PY{p}{(}\PY{n}{message}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{ExceptionDemo}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// Method using throw keyword}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{CheckAge}\PY{p}{(}\PY{k+kt}{int}\PY{+w}{ }\PY{n}{age}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{k}{if}\PY{+w}{ }\PY{p}{(}\PY{n}{age}\PY{+w}{ }\PY{o}{\PYZlt{}}\PY{+w}{ }\PY{l+m+mi}{18}\PY{p}{)}
+\PY{+w}{        }\PY{p}{\PYZob{}}
+\PY{+w}{            }\PY{c+c1}{// (b) throw keyword}
+\PY{+w}{            }\PY{k}{throw}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n+nf}{AgeException}\PY{p}{(}\PY{l+s}{\PYZdq{}Age must be 18 or above.\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{p}{\PYZcb{}}
+\PY{+w}{        }\PY{k}{else}
+\PY{+w}{        }\PY{p}{\PYZob{}}
+\PY{+w}{            }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Valid Age: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{age}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{p}{\PYZcb{}}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{k}{try}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// (a) try\PYZhy{}catch\PYZhy{}finally}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Enter your age:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{k+kt}{int}\PY{+w}{ }\PY{n}{age}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{l+m+mi}{16}\PY{p}{;}\PY{+w}{   }\PY{c+c1}{// fixed value for online compiler}
+
+\PY{+w}{    }\PY{n}{ExceptionDemo}\PY{p}{.}\PY{n}{CheckAge}\PY{p}{(}\PY{n}{age}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+\PY{k}{catch}\PY{+w}{ }\PY{p}{(}\PY{n}{AgeException}\PY{+w}{ }\PY{n}{ex}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Custom Exception Caught: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{ex}\PY{p}{.}\PY{n}{Message}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+\PY{k}{catch}\PY{+w}{ }\PY{p}{(}\PY{n}{Exception}\PY{+w}{ }\PY{n}{ex}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}General Exception: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{ex}\PY{p}{.}\PY{n}{Message}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+\PY{k}{finally}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Finally block executed\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Enter your age:
+Custom Exception Caught: Age must be 18 or above.
+Finally block executed
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \hypertarget{wap-a-to-use-built-in-attributes-in-c.-b-to-create-and-use-custom-attribute-in-c.}{%
+\section{16. WAP a) to use built-in attributes in C\#. b) to create and
+use custom attribute in
+C\#.}\label{wap-a-to-use-built-in-attributes-in-c.-b-to-create-and-use-custom-attribute-in-c.}}
+
+Theory: Attributes: Metadata added to classes, methods, or properties to
+provide extra information. Built-in attributes: Predefined by .NET
+(e.g., {[}Obsolete{]}, {[}Serializable{]}). Custom attributes:
+User-defined attributes by inheriting from System.Attribute.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Reflection}\PY{p}{;}
+
+\PY{c+c1}{// (b) Custom Attribute}
+\PY{n+na}{[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{InfoAttribute}\PY{+w}{ }\PY{p}{:}\PY{+w}{ }\PY{n}{Attribute}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{Author}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{k}{get}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{Version}\PY{+w}{ }\PY{p}{\PYZob{}}\PY{+w}{ }\PY{k}{get}\PY{p}{;}\PY{+w}{ }\PY{p}{\PYZcb{}}
+
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{n+nf}{InfoAttribute}\PY{p}{(}\PY{k+kt}{string}\PY{+w}{ }\PY{n}{author}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{string}\PY{+w}{ }\PY{n}{version}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Author}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{author}\PY{p}{;}
+\PY{+w}{        }\PY{n}{Version}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{version}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Using Built\PYZhy{}in and Custom Attributes}
+\PY{n+na}{[Obsolete(\PYZdq{}This class is obsolete. Use NewDemo instead.\PYZdq{})]}
+\PY{n+na}{[Info(\PYZdq{}Mohit Tharu\PYZdq{}, \PYZdq{}1.0\PYZdq{})]}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{Demo}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n+na}{[Info(\PYZdq{}Mohit Tharu\PYZdq{}, \PYZdq{}1.1\PYZdq{})]}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{void}\PY{+w}{ }\PY{n+nf}{Show}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Demo class Show() method\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Demo}\PY{+w}{ }\PY{n}{d}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{new}\PY{+w}{ }\PY{n}{Demo}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\PY{n}{d}\PY{p}{.}\PY{n}{Show}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Reading Custom Attribute using Reflection}
+\PY{n}{Type}\PY{+w}{ }\PY{n}{type}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{k}{typeof}\PY{p}{(}\PY{n}{Demo}\PY{p}{)}\PY{p}{;}
+\PY{k+kt}{object}\PY{p}{[}\PY{p}{]}\PY{+w}{ }\PY{n}{attributes}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{type}\PY{p}{.}\PY{n}{GetCustomAttributes}\PY{p}{(}\PY{k}{typeof}\PY{p}{(}\PY{n}{InfoAttribute}\PY{p}{)}\PY{p}{,}\PY{+w}{ }\PY{k}{false}\PY{p}{)}\PY{p}{;}
+
+\PY{k}{foreach}\PY{+w}{ }\PY{p}{(}\PY{n}{InfoAttribute}\PY{+w}{ }\PY{n}{attr}\PY{+w}{ }\PY{k}{in}\PY{+w}{ }\PY{n}{attributes}\PY{p}{)}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nCustom Attribute Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Author: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{attr}\PY{p}{.}\PY{n}{Author}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Version: \PYZdq{}}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{n}{attr}\PY{p}{.}\PY{n}{Version}\PY{p}{)}\PY{p}{;}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Demo class Show() method
+
+Custom Attribute Details:
+Author: Mohit Tharu
+Version: 1.0
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+(31,1): warning CS0618: 'Demo' is obsolete: 'This class is obsolete. Use NewDemo
+instead.'
+
+(31,14): warning CS0618: 'Demo' is obsolete: 'This class is obsolete. Use
+NewDemo instead.'
+
+(35,20): warning CS0618: 'Demo' is obsolete: 'This class is obsolete. Use
+NewDemo instead.'
+
+    \end{Verbatim}
+
+    \hypertarget{wap-to-demonstrate-asynchronous-programming-in-c-using-async-and-await-keywords.}{%
+\section{17. WAP to demonstrate asynchronous programming in C\# using
+async and await
+keywords.}\label{wap-to-demonstrate-asynchronous-programming-in-c-using-async-and-await-keywords.}}
+
+Theory: Asynchronous programming allows a program to perform tasks
+without blocking the main thread. async keyword: Declares a method as
+asynchronous. await keyword: Waits for the completion of an asynchronous
+task without blocking the main thread. Benefits: Improved responsiveness
+in UI applications Efficient use of system resources Better performance
+for I/O-bound tasks
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System}\PY{p}{;}
+\PY{k}{using}\PY{+w}{ }\PY{n+nn}{System.Threading.Tasks}\PY{p}{;}
+
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{AsyncDemo}
+\PY{p}{\PYZob{}}
+\PY{+w}{    }\PY{c+c1}{// Asynchronous method}
+\PY{+w}{    }\PY{k}{public}\PY{+w}{ }\PY{k}{static}\PY{+w}{ }\PY{k}{async}\PY{+w}{ }\PY{n}{Task}\PY{+w}{ }\PY{n+nf}{LongTask}\PY{p}{(}\PY{p}{)}
+\PY{+w}{    }\PY{p}{\PYZob{}}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Long task started...\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{        }\PY{k}{await}\PY{+w}{ }\PY{n}{Task}\PY{p}{.}\PY{n}{Delay}\PY{p}{(}\PY{l+m+mi}{3000}\PY{p}{)}\PY{p}{;}\PY{+w}{   }\PY{c+c1}{// Simulates time\PYZhy{}consuming work}
+\PY{+w}{        }\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Long task completed.\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{+w}{    }\PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{// Top\PYZhy{}level code}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Program started\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Calling async method}
+\PY{n}{Task}\PY{+w}{ }\PY{n}{t}\PY{+w}{ }\PY{o}{=}\PY{+w}{ }\PY{n}{AsyncDemo}\PY{p}{.}\PY{n}{LongTask}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Other work while async task is running}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Doing other work...\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Wait for async task to complete}
+\PY{n}{t}\PY{p}{.}\PY{n}{Wait}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Program ended\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{c+c1}{// Student details}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}\PYZbs{}nStudent Details:\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Name: Mohit Tharu\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}Roll No: 117\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{Console}\PY{p}{.}\PY{n}{WriteLine}\PY{p}{(}\PY{l+s}{\PYZdq{}College: Patan Multiple Campus\PYZdq{}}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{Console}\PY{p}{.}\PY{n}{ReadLine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Program started
+Long task started{\ldots}
+Doing other work{\ldots}
+Long task completed.
+Program ended
+
+Student Details:
+Name: Mohit Tharu
+Roll No: 117
+College: Patan Multiple Campus
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
